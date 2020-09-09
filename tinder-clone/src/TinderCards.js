@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
+import database from "./firebase";
 import "./TinderCards.css";
 
 const TinderCards = () => {
-  const [people, setPeople] = useState([
-    {
-      name: "Bill Gates",
-      url: "http://www.usline.kr/news/photo/202004/15356_9300_490.jpg",
-    },
-    {
-      name: "mark zuckerberg",
-      url:
-        "https://mblogthumb-phinf.pstatic.net/20150909_37/ahalinux_1441808513455dudnB_PNG/%B8%B6%C5%A9%C1%D6%C4%BF%B9%F6%B1%D7.PNG?type=w2",
-    },
-  ]);
+  const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    database
+      .collection("people")
+      .onSnapshot((snapshot) =>
+        setPeople(snapshot.docs.map((doc) => doc.data()))
+      );
+  }, []);
 
   //   setPeople([...people, "ddoni", "park"]);
 
